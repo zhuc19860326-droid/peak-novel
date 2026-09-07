@@ -211,6 +211,7 @@ body {
   color: #c49a6c; font-size: 10px;
 }
 .choice-btn {
+  position: relative;
   display: flex; align-items: center; gap: 12px;
   width: 100%; padding: 14px 16px;
   background: rgba(139,90,43,0.06);
@@ -225,6 +226,10 @@ body {
   transform: scale(0.99);
 }
 .choice-label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 28px; height: 28px;
   background: #8b5a2b; color: #fff;
   border-radius: 50%;
@@ -236,7 +241,11 @@ body {
   flex:1; font-size: 14px;
   color: #2d2a26; line-height: 1.5;
 }
-.choice-arrow { color: #8b5a2b; font-size: 14px; }
+.choice-arrow {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%); color: #8b5a2b; font-size: 14px; }
 
 /* 结局页 */
 .ending {

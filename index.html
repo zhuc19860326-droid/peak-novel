@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PEAK">
@@ -134,7 +134,7 @@ body {
 }
 .topbar-btn:active { background: rgba(139,90,43,0.1); }
 .topbar-title {
-  flex:1; text-align: center;
+  flex:1; text-align: center; min-width: 0;
   font-size: 14px; color: #6b6560;
   font-weight: 500;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
@@ -149,7 +149,7 @@ body {
   flex-shrink: 0;
 }
 .stat {
-  flex:1; display: flex; align-items: center; gap: 6px;
+  flex:1; display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;
   font-size: 11px; color: #9a938c;
 }
 .stat-bar {
@@ -238,7 +238,7 @@ body {
 .choice-btn {
   position: relative;
   display: flex; align-items: center; gap: 12px;
-  width: 100%; padding: 14px 16px;
+  width: 100%; padding: 14px 44px 14px 52px;
   background: rgba(139,90,43,0.06);
   border: 1px solid #b8956a;
   border-radius: 8px;
@@ -263,7 +263,7 @@ body {
   flex-shrink: 0;
 }
 .choice-text {
-  flex:1; font-size: 14px;
+  flex:1; font-size: 14px; padding-right: 8px;
   color: #2d2a26; line-height: 1.5;
 }
 .choice-arrow {

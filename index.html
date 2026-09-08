@@ -21,6 +21,7 @@ html {
 body {
   height: 100%;
   overflow: hidden;
+  height: 100dvh;
   font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
   background: #e8dfd0;
   color: #2d2a26;
@@ -29,7 +30,7 @@ body {
 
 /* 标题页 */
 #titlePage {
-  position: fixed; top:0; left:0; width:100%; height:100%;
+  position: absolute; top:0; left:0; right:0; bottom:0; width:100%; height:100%;
   background: linear-gradient(135deg, #f5f0e6, #e8dfd0);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -103,14 +104,11 @@ body {
 
 /* 阅读器 */
 #reader {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
   width: 100%;
   max-width: 500px;
-  height: 100vh;
-  height: 100dvh;
+  margin: 0 auto;
+  height: 100%;
   background: #f5f0e6;
   display: flex;
   flex-direction: column;
@@ -168,8 +166,8 @@ body {
 
 /* 内容区 */
 .content {
-  flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
+  flex: 1 1 0;
+  -webkit-flex: 1 1 0;
   padding: 20px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -178,10 +176,16 @@ body {
   min-width: 0;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
 }
 
 .chapter-illus {
-  width: 100%; border-radius: 8px;
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
 }
@@ -338,7 +342,7 @@ body {
 
 /* 侧边面板 */
 .panel {
-  position: fixed; top:0; right:-85%;
+  position: absolute; top:0; right:-85%;
   width: 85%; max-width: 320px;
   height: 100%;
   background: #f5f0e6;
@@ -373,7 +377,7 @@ body {
 }
 
 .mask {
-  position: fixed; top:0; left:0;
+  position: absolute; top:0; left:0;
   width:100%; height:100%;
   background: rgba(0,0,0,0.4);
   z-index: 199;
@@ -576,16 +580,13 @@ body.night .ending-msg { color: #a1a1aa; background: rgba(251,191,36,0.06); bord
 
 @media (max-width: 500px) {
   #reader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative;
     width: 100%;
     max-width: 100%;
-    height: 100vh;
-    height: 100dvh;
+    height: 100%;
     overflow: hidden;
     transform: none;
+    margin: 0;
   }
 }
 </style>
@@ -3412,6 +3413,27 @@ const scenes = {
 };
 
 // ===== 开始游戏 =====
+
+// iOS 兼容：动态调整内容区高度
+function adjustContentHeight() {
+  var reader = document.getElementById('reader');
+  var content = document.getElementById('content');
+  if (!reader || !content) return;
+  
+  var topbar = document.querySelector('.topbar');
+  var stats = document.querySelector('.stats');
+  var bottombar = document.querySelector('.bottombar');
+  
+  var topH = (topbar ? topbar.offsetHeight : 0) + (stats ? stats.offsetHeight : 0);
+  var bottomH = bottombar ? bottombar.offsetHeight : 0;
+  var totalH = window.innerHeight;
+  
+  content.style.height = (totalH - topH - bottomH) + 'px';
+}
+
+window.addEventListener('resize', adjustContentHeight);
+window.addEventListener('orientationchange', function() { setTimeout(adjustContentHeight, 100); });
+
 function startGame() {
   // 强制关闭所有面板和遮罩，防止残留
   document.getElementById('panel').classList.remove('show');
@@ -3520,6 +3542,7 @@ function renderScene() {
   content.innerHTML = html;
   // 滚动到顶部（兼容移动端）
   content.scrollTop = 0;
+  setTimeout(adjustContentHeight, 50);
   try {
     content.scrollTo({ top: 0, behavior: 'auto' });
   } catch(e) {}
@@ -3753,6 +3776,7 @@ function loadSlot(n) {
   closePanel();
   document.getElementById('titlePage').classList.add('hide');
   document.getElementById('reader').style.display = 'flex';
+  setTimeout(adjustContentHeight, 50);
   document.getElementById('reader').style.opacity = '1';
   
   renderScene();
